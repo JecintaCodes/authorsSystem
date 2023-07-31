@@ -25,5 +25,5 @@ export interface iAuthor{
     password?: string
     avatar?: string
     avatarId?: string
-    article?: {} []
+    olarticle?: {} []
 }

@@ -11,7 +11,7 @@ const articleModel = new mongoose.Schema({
     content:{
         type: String
     },
-    artdescriptionicle:{
+    description:{
         type: String
     },
     authorId:{

@@ -1,10 +1,10 @@
 import express,{Router} from "express"
 import { SignIn, SignUp, Update, deleted, viewAll, viewOne } from "../controller/authorController"
-
+import upload from "../config/Multer"
 const authorRouter = express.Router()
 
 
-authorRouter.route("/sign-up").post(SignUp)
+authorRouter.route("/sign-up").post(upload, SignUp)
 authorRouter.route("/sign-in").post(SignIn)
 authorRouter.route("/view-all").get(viewAll)
 authorRouter.route("/view-one/:id").get(viewOne)

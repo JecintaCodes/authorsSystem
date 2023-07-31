@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express"
 import authorModel from "../model/authorModel"
+import cloudinary from "cloudinary"
 // import bcrypt from "bcrypt"
 
 export const SignUp = async(req:Request,res:Response):Promise<Response>=>{
@@ -9,12 +10,14 @@ try {
     // const salt = await bcrypt.genSalt(10);
     // const harsh = await bcrypt.hash(password, salt)
 
+    const {secure_url, public_id} = await cloudinary.uploader.upload(req.file?.path,);
+
 const newSign = await authorModel.create({
     name,
     email,
     password,
-    avatar,
-    avatarId,
+    avatar:secure_url,// secure_url
+    avatarId:public_id,//public_id
     article
 })
 

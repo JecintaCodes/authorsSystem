@@ -4,12 +4,14 @@ import { Application } from "express"
 import { Request } from "express"
 import { Response } from "express"
 import authorRouter from "./router/authorRouter"
+import articleRouter from "./router/articleRouter"
 
 
 export const mainApp = (app:Application)=>{
     app.use(express.json())
     app.use(cors())
-    app.use("v1/jecinta/authorRouter",authorRouter)
+    app.use("api/v1/authorRouter",authorRouter)
+    app.use("api/v1/articleRouter", articleRouter)
 
     app.get("/", (req:Request, res:Response)=>{
         try {
