@@ -14,13 +14,13 @@ const articleModel = new mongoose.Schema({
     description:{
         type: String
     },
-    authorId:{
+    authorID:{
         type: String
     },
     Image:{
         type: String
     },
-    ImageId:{
+    ImageID:{
         type: String
     },
     coverImage:{

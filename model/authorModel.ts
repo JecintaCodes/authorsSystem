@@ -17,7 +17,7 @@ const authorModel = new mongoose.Schema({
     avatar:{
         type: String
     },
-    avatarId:{
+    avatarID:{
         type: String
     },
     article:[

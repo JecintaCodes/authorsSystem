@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import cloudinary from "../config/cloudinary";
 
 
-export const createArticle = async(req:Request,res:Response):Promise<Response>=>{
+export const createArticle = async(req:Request,res:Response)=>{
 try {
     const { email, description, content, title ,image, imageID}= req.body;
     const {authorID} = req.params;
@@ -13,25 +13,26 @@ try {
     const author:any = await authorModel.findById({authorID})
 
 
-    const {secure_url, public_id} =await cloudinary.uploader.upload(req.file.path);
-    const  article = await authorModel.create({
-        description, 
-        content, 
-        title ,
-        authorID:author_Id,// author_Id,
+   
+    const { secure_url, public_id } = await cloudinary.uploader.upload(
+        req.file.path,
+      );
+      const article = await articleModel.create({
+        description,
+        content,
+        title,
+        authorID: author._id,
         author,
-        image:secure_url, //secure_url
-        imageID:public_id, //public_id
-    })
+        image: secure_url,
+        imageID: public_id,
+      });
+      author?.articles.push(new mongoose.Types.ObjectId(article._id));
+      author.save();
+      res.status(201).json({
+        message: "Article created",
+        data: article,
+      });
 
-author?.article?.push(new mongoose.Types.ObjectId(article._id));
-
-author!.save()
-
-return res.status(201).json({
-    message: "Article Created",
-  
-})
 } catch (error) {
     return res.status(404).json({
         message: " article not ctrated ",
@@ -40,23 +41,27 @@ return res.status(201).json({
 }
 }
 
-export const getAuthorArticle = async(req:Request,res:Response):Promise<Response>=>{
+export const getAuthorArticle = async(req:Request,res:Response)=>{
     try {
         
-        const {authorId} = req.params;
+        const {authorID} = req.params;
 
-        const author: any = await authorModel.findById(authorId).populate({
-            path:"articles",
+    
+        const author: any = await authorModel.findById(authorID).populate({
+            path: "articles",
             options: {
-                sort:{
-                    createdAt: -1,
-                }
-            }
-        });
-        return res.status(200).json({
-            message:"gotten athor articles",
-            data: author
-        })
+              sort: {
+                createdAt: -1,
+              },
+            },
+          });
+      
+          res.status(201).json({
+            message: "Article created",
+            data: author,
+          });
+
+
     } catch (error) {
         return res.status(404).json({
             message:"author articles not gotten",
@@ -143,7 +148,7 @@ export const getAllArticles = async (req: any, res: Response) => {
     try {
       const author: any = await articleModel.find();
   
-      res.status(201).json({
+      res.status(200).json({
         message: "veiwing all Article",
         data: author,
       });
@@ -175,10 +180,11 @@ export const getAllArticles = async (req: any, res: Response) => {
         authors?.friends!.includes(el.authorID),
       );
   
-      res.status(201).json({
+      res.status(200).json({
         message: "Author's Article ",
         data,
       });
+
     } catch (error) {
       res.status(404).json({
         message: "Error Found",

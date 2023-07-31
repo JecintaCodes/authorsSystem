@@ -3,9 +3,9 @@ export interface iArticle{
     title?:string
     content?: string
     description?: string
-    authorId?: string
+    authorID?: string
     image?: string
-    imageId?: string
+    imageID?: string
     coverImage?: string
     rating?: []
     likes?: []
@@ -24,6 +24,6 @@ export interface iAuthor{
     email?: string
     password?: string
     avatar?: string
-    avatarId?: string
+    avatarID?: string
     olarticle?: {} []
 }
