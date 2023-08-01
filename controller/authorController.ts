@@ -3,14 +3,16 @@ import authorModel from "../model/authorModel"
 import cloudinary from "cloudinary"
 // import bcrypt from "bcrypt"
 
-export const SignUp = async(req:Request,res:Response):Promise<Response>=>{
+export const SignUp = async(req:any,res:Response):Promise<Response>=>{
 try {
     const { name,email,password,avatar,avatarId,article}= req.body;
 
     // const salt = await bcrypt.genSalt(10);
     // const harsh = await bcrypt.hash(password, salt)
 
-    const {secure_url, public_id} = await cloudinary.uploader.upload(req.file?.path,);
+    const { secure_url, public_id } = await cloudinary.uploader.upload(
+        req.file?.path
+        );
 
 const newSign = await authorModel.create({
     name,

@@ -3,12 +3,16 @@ import articleModel from "../model/articleModel";
 import ratingModel from "../model/ratingModel";
 import authorModel from "../model/authorModel";
 import mongoose from "mongoose";
+
+
 export const createRating = async (req: Request, res: Response) => {
   try {
     const { authorID, articleID } = req.params;
     const { rate } = req.body;
+
     const author = await authorModel.findById(authorID);
     const article: any = await articleModel.findById(articleID);
+    
     const rating = await ratingModel.create({
       rate,
       ratedBy: author!._id,
@@ -16,6 +20,7 @@ export const createRating = async (req: Request, res: Response) => {
     });
     article?.ratings?.push(new mongoose.Types.ObjectId(rating._id!));
     article!.save();
+
     res.status(201).json({
       message: "Rating created ",
       data: rating,
@@ -55,12 +60,12 @@ export const rateArticle = async (req: Request, res: Response) => {
 
     let totalRate = article.ratings.length;
     let totalScore = article.ratings
-      .map((el) => {
+    //   .map((el) => {
       .map((el: any) => {
         return el.rate;
       })
 
-      .reduce((a, b) => {
+    //   .reduce((a, b) => {
       .reduce((a: number, b: number) => {
         return a + b;
       });

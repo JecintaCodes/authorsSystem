@@ -17,10 +17,13 @@ const articleModel = new mongoose.Schema({
     authorID:{
         type: String
     },
-    Image:{
+    image:{
         type: String
     },
-    ImageID:{
+    friend:{
+        type: String
+    },
+    imageID:{
         type: String
     },
     coverImage:{

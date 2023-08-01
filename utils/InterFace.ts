@@ -5,6 +5,7 @@ export interface iArticle{
     description?: string
     authorID?: string
     image?: string
+    friend?: string
     imageID?: string
     coverImage?: string
     rating?: []
@@ -25,5 +26,5 @@ export interface iAuthor{
     password?: string
     avatar?: string
     avatarID?: string
-    olarticle?: {} []
+    article?: {} []
 }

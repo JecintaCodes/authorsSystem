@@ -5,9 +5,9 @@ import mongoose from "mongoose";
 import cloudinary from "../config/cloudinary";
 
 
-export const createArticle = async(req:Request,res:Response)=>{
+export const createArticle = async(req:any,res:Response)=>{
 try {
-    const { email, description, content, title ,image, imageID}= req.body;
+    const { email, description, content, title } = req.body;
     const {authorID} = req.params;
     // const author = await authorModel.findOne(email)
     const author:any = await authorModel.findById({authorID})
@@ -15,7 +15,7 @@ try {
 
    
     const { secure_url, public_id } = await cloudinary.uploader.upload(
-        req.file.path,
+        req.file?.path
       );
       const article = await articleModel.create({
         description,
@@ -28,6 +28,8 @@ try {
       });
       author?.articles.push(new mongoose.Types.ObjectId(article._id));
       author.save();
+
+
       res.status(201).json({
         message: "Article created",
         data: article,
@@ -177,7 +179,7 @@ export const getAllArticles = async (req: any, res: Response) => {
       });
   
       let data = article?.filter((el: any) =>
-        authors?.friends!.includes(el.authorID),
+        author?.friend.includes(el.authorID),
       );
   
       res.status(200).json({
