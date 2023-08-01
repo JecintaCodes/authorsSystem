@@ -1,31 +1,30 @@
 import express, { Request, Response } from "express"
 import authorModel from "../model/authorModel"
 import cloudinary from "cloudinary"
-// import bcrypt from "bcrypt"
+import bcrypt from "bcrypt"
 
-export const SignUp = async(req:any,res:Response):Promise<Response>=>{
-try {
-    const { name,email,password,avatar,avatarId,article}= req.body;
-
-    // const salt = await bcrypt.genSalt(10);
-    // const harsh = await bcrypt.hash(password, salt)
-
-    const { secure_url, public_id } = await cloudinary.uploader.upload(
-        req.file?.path
-        );
-
-const newSign = await authorModel.create({
-    name,
-    email,
-    password,
-    avatar:secure_url,// secure_url
-    avatarId:public_id,//public_id
-    article
-})
+export const createAuthor = async (req: any, res: Response) => {
+    try {
+      const { name, email, password } = req.body;
+      const salt = await bcrypt.genSalt(10);
+      const hashed = await bcrypt.hash(password, salt);
+  
+      const { secure_url, public_id } = await cloudinary.uploader.upload(
+        req.file?.path,
+      );
+  
+      const user = await authorModel.create({
+        name,
+        email,
+        password: hashed,
+        avatar: secure_url,
+        avatarID: public_id,
+      });
+  
 
 return res.status(200).json({
     message: "SignIn",
-    data: newSign
+    data: user
 })
 
 } catch (error) {
